@@ -1,14 +1,14 @@
 package main
 
 import (
-	"github.com/Kevinmajesta/depublic-backend/configs"
-	"github.com/Kevinmajesta/depublic-backend/internal/builder"
-	"github.com/Kevinmajesta/depublic-backend/internal/entity"
-	"github.com/Kevinmajesta/depublic-backend/pkg/cache"
-	"github.com/Kevinmajesta/depublic-backend/pkg/encrypt"
-	"github.com/Kevinmajesta/depublic-backend/pkg/postgres"
-	"github.com/Kevinmajesta/depublic-backend/pkg/server"
-	"github.com/Kevinmajesta/depublic-backend/pkg/token"
+	"github.com/suryaapandi28/kasircore/configs"
+	"github.com/suryaapandi28/kasircore/internal/builder"
+	"github.com/suryaapandi28/kasircore/internal/entity"
+	"github.com/suryaapandi28/kasircore/pkg/cache"
+	"github.com/suryaapandi28/kasircore/pkg/encrypt"
+	"github.com/suryaapandi28/kasircore/pkg/postgres"
+	"github.com/suryaapandi28/kasircore/pkg/server"
+	"github.com/suryaapandi28/kasircore/pkg/token"
 )
 
 func main() {

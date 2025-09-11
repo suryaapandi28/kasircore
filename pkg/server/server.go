@@ -9,12 +9,12 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/Kevinmajesta/depublic-backend/pkg/response"
-	"github.com/Kevinmajesta/depublic-backend/pkg/route"
-	"github.com/Kevinmajesta/depublic-backend/pkg/token"
 	"github.com/golang-jwt/jwt/v5"
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
+	"github.com/suryaapandi28/kasircore/pkg/response"
+	"github.com/suryaapandi28/kasircore/pkg/route"
+	"github.com/suryaapandi28/kasircore/pkg/token"
 )
 
 type Server struct {

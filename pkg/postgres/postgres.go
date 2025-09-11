@@ -3,7 +3,7 @@ package postgres
 import (
 	"fmt"
 
-	"github.com/Kevinmajesta/depublic-backend/configs"
+	"github.com/suryaapandi28/kasircore/configs"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

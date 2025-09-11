@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Kevinmajesta/depublic-backend/configs"
 	"github.com/redis/go-redis/v9"
+	"github.com/suryaapandi28/kasircore/configs"
 )
 
 func InitCache(config *configs.RedisConfig) *redis.Client {
