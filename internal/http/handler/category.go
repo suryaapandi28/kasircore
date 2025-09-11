@@ -3,12 +3,12 @@ package handler
 import (
 	"net/http"
 
-	"github.com/Kevinmajesta/depublic-backend/internal/entity"
-	"github.com/Kevinmajesta/depublic-backend/internal/http/binder"
-	"github.com/Kevinmajesta/depublic-backend/internal/service"
-	"github.com/Kevinmajesta/depublic-backend/pkg/response"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
+	"github.com/suryaapandi28/kasircore/internal/entity"
+	"github.com/suryaapandi28/kasircore/internal/http/binder"
+	"github.com/suryaapandi28/kasircore/internal/service"
+	"github.com/suryaapandi28/kasircore/pkg/response"
 )
 
 type CategoryHandler struct {

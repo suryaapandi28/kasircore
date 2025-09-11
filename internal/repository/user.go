@@ -5,10 +5,10 @@ import (
 	"errors"
 	"time"
 
-	"github.com/Kevinmajesta/depublic-backend/internal/entity"
-	"github.com/Kevinmajesta/depublic-backend/pkg/cache"
 	"github.com/google/uuid"
 	"github.com/redis/go-redis/v9"
+	"github.com/suryaapandi28/kasircore/internal/entity"
+	"github.com/suryaapandi28/kasircore/pkg/cache"
 	"gorm.io/gorm"
 )
 
@@ -30,7 +30,7 @@ type UserRepository interface {
 	GetAllUserIds() ([]uuid.UUID, error)
 	UpdateUserJwtToken(userID uuid.UUID, token string, expiresAt time.Time) error
 	CheckUser(UserId uuid.UUID) (*entity.User, error)
-	CheckUserExists(id uuid.UUID) (bool, error) 
+	CheckUserExists(id uuid.UUID) (bool, error)
 }
 
 type userRepository struct {
@@ -70,42 +70,41 @@ func (r *userRepository) CreateUser(user *entity.User) (*entity.User, error) {
 }
 
 func (r *userRepository) CheckUserExists(id uuid.UUID) (bool, error) {
-    var count int64
-    if err := r.db.Model(&entity.User{}).Where("user_id = ?", id).Count(&count).Error; err != nil {
-        return false, err
-    }
-    return count > 0, nil
+	var count int64
+	if err := r.db.Model(&entity.User{}).Where("user_id = ?", id).Count(&count).Error; err != nil {
+		return false, err
+	}
+	return count > 0, nil
 }
 
 func (r *userRepository) UpdateUser(user *entity.User) (*entity.User, error) {
-    fields := make(map[string]interface{})
+	fields := make(map[string]interface{})
 
-    if user.Fullname != "" {
-        fields["fullname"] = user.Fullname
-    }
-    if user.Email != "" {
-        fields["email"] = user.Email
-    }
-    if user.Password != "" {
-        fields["password"] = user.Password
-    }
-    if user.Role != "" {
-        fields["role"] = user.Role
-    }
-    if user.Verification {
-        fields["verification"] = user.Verification
-    }
-    if user.Phone != "" {
-        fields["phone"] = user.Phone
-    }
+	if user.Fullname != "" {
+		fields["fullname"] = user.Fullname
+	}
+	if user.Email != "" {
+		fields["email"] = user.Email
+	}
+	if user.Password != "" {
+		fields["password"] = user.Password
+	}
+	if user.Role != "" {
+		fields["role"] = user.Role
+	}
+	if user.Verification {
+		fields["verification"] = user.Verification
+	}
+	if user.Phone != "" {
+		fields["phone"] = user.Phone
+	}
 
-    if err := r.db.Model(user).Where("user_id = ?", user.UserId).Updates(fields).Error; err != nil {
-        return user, err
-    }
+	if err := r.db.Model(user).Where("user_id = ?", user.UserId).Updates(fields).Error; err != nil {
+		return user, err
+	}
 
-    return user, nil
+	return user, nil
 }
-
 
 func (r *userRepository) DeleteUser(user *entity.User) (bool, error) {
 	if err := r.db.Delete(&entity.User{}, user.UserId).Error; err != nil {

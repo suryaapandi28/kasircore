@@ -3,8 +3,8 @@ package router
 import (
 	"net/http"
 
-	"github.com/Kevinmajesta/depublic-backend/internal/http/handler"
-	"github.com/Kevinmajesta/depublic-backend/pkg/route"
+	"github.com/suryaapandi28/kasircore/internal/http/handler"
+	"github.com/suryaapandi28/kasircore/pkg/route"
 )
 
 const (

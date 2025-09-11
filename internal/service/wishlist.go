@@ -3,9 +3,9 @@ package service
 import (
 	"errors"
 
-	"github.com/Kevinmajesta/depublic-backend/internal/entity"
-	"github.com/Kevinmajesta/depublic-backend/internal/repository"
 	"github.com/google/uuid"
+	"github.com/suryaapandi28/kasircore/internal/entity"
+	"github.com/suryaapandi28/kasircore/internal/repository"
 )
 
 type WishlistService interface {

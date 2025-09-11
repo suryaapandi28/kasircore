@@ -4,10 +4,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Kevinmajesta/depublic-backend/internal/service"
-	"github.com/Kevinmajesta/depublic-backend/pkg/response"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
+	"github.com/suryaapandi28/kasircore/internal/service"
+	"github.com/suryaapandi28/kasircore/pkg/response"
 )
 
 type TicketHandler struct {

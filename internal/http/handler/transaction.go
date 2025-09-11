@@ -7,15 +7,15 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/Kevinmajesta/depublic-backend/internal/entity"
-	"github.com/Kevinmajesta/depublic-backend/internal/http/binder"
-	"github.com/Kevinmajesta/depublic-backend/internal/service"
-	"github.com/Kevinmajesta/depublic-backend/pkg/response"
-	"github.com/Kevinmajesta/depublic-backend/pkg/token"
 	"github.com/go-playground/validator/v10"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
+	"github.com/suryaapandi28/kasircore/internal/entity"
+	"github.com/suryaapandi28/kasircore/internal/http/binder"
+	"github.com/suryaapandi28/kasircore/internal/service"
+	"github.com/suryaapandi28/kasircore/pkg/response"
+	"github.com/suryaapandi28/kasircore/pkg/token"
 )
 
 type TransactionHandler struct {

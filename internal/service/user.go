@@ -6,13 +6,13 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/Kevinmajesta/depublic-backend/internal/entity"
-	"github.com/Kevinmajesta/depublic-backend/internal/repository"
-	"github.com/Kevinmajesta/depublic-backend/pkg/email"
-	"github.com/Kevinmajesta/depublic-backend/pkg/encrypt"
-	"github.com/Kevinmajesta/depublic-backend/pkg/token"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
+	"github.com/suryaapandi28/kasircore/internal/entity"
+	"github.com/suryaapandi28/kasircore/internal/repository"
+	"github.com/suryaapandi28/kasircore/pkg/email"
+	"github.com/suryaapandi28/kasircore/pkg/encrypt"
+	"github.com/suryaapandi28/kasircore/pkg/token"
 	"golang.org/x/crypto/bcrypt"
 )
 

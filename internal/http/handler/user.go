@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/Kevinmajesta/depublic-backend/internal/entity"
-	"github.com/Kevinmajesta/depublic-backend/internal/http/binder"
-	"github.com/Kevinmajesta/depublic-backend/internal/service"
-	"github.com/Kevinmajesta/depublic-backend/pkg/response"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
+	"github.com/suryaapandi28/kasircore/internal/entity"
+	"github.com/suryaapandi28/kasircore/internal/http/binder"
+	"github.com/suryaapandi28/kasircore/internal/service"
+	"github.com/suryaapandi28/kasircore/pkg/response"
 )
 
 type UserHandler struct {
@@ -40,7 +40,7 @@ func (h *UserHandler) CreateUser(c echo.Context) error {
 	if err := c.Bind(&input); err != nil {
 		return c.JSON(http.StatusBadRequest, response.ErrorResponse(http.StatusBadRequest, "there is an input error"))
 	}
-	
+
 	if h.userService.EmailExists(input.Email) {
 		return c.JSON(http.StatusBadRequest, response.ErrorResponse(http.StatusBadRequest, "email is already in use"))
 	}
@@ -55,35 +55,34 @@ func (h *UserHandler) CreateUser(c echo.Context) error {
 }
 
 func (h *UserHandler) UpdateUser(c echo.Context) error {
-    var input binder.UserUpdateRequest
+	var input binder.UserUpdateRequest
 
-    if err := c.Bind(&input); err != nil {
-        return c.JSON(http.StatusBadRequest, response.ErrorResponse(http.StatusBadRequest, "there is an input error"))
-    }
+	if err := c.Bind(&input); err != nil {
+		return c.JSON(http.StatusBadRequest, response.ErrorResponse(http.StatusBadRequest, "there is an input error"))
+	}
 
-    id, err := uuid.Parse(input.User_ID)
-    if err != nil {
-        return c.JSON(http.StatusBadRequest, response.ErrorResponse(http.StatusBadRequest, "invalid user ID"))
-    }
+	id, err := uuid.Parse(input.User_ID)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.ErrorResponse(http.StatusBadRequest, "invalid user ID"))
+	}
 
-    exists, err := h.userService.CheckUserExists(id)
-    if err != nil {
-        return c.JSON(http.StatusInternalServerError, response.ErrorResponse(http.StatusInternalServerError, "could not verify user existence"))
-    }
-    if !exists {
-        return c.JSON(http.StatusNotFound, response.ErrorResponse(http.StatusNotFound, "user ID does not exist"))
-    }
+	exists, err := h.userService.CheckUserExists(id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, response.ErrorResponse(http.StatusInternalServerError, "could not verify user existence"))
+	}
+	if !exists {
+		return c.JSON(http.StatusNotFound, response.ErrorResponse(http.StatusNotFound, "user ID does not exist"))
+	}
 
-    inputUser := entity.UpdateUser(id, input.Fullname, input.Email, input.Password, input.Phone, input.Role, input.Status, input.Verification)
-    
-    updatedUser, err := h.userService.UpdateUser(inputUser)
-    if err != nil {
-        return c.JSON(http.StatusBadRequest, response.ErrorResponse(http.StatusBadRequest, err.Error()))
-    }
+	inputUser := entity.UpdateUser(id, input.Fullname, input.Email, input.Password, input.Phone, input.Role, input.Status, input.Verification)
 
-    return c.JSON(http.StatusOK, response.SuccessResponse(http.StatusOK, "success update user", updatedUser))
+	updatedUser, err := h.userService.UpdateUser(inputUser)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.ErrorResponse(http.StatusBadRequest, err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, response.SuccessResponse(http.StatusOK, "success update user", updatedUser))
 }
-
 
 func (h *UserHandler) DeleteUser(c echo.Context) error {
 	var input binder.UserDeleteRequest

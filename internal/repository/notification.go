@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"github.com/Kevinmajesta/depublic-backend/internal/entity"
-	"github.com/Kevinmajesta/depublic-backend/pkg/cache"
 	"github.com/google/uuid"
+	"github.com/suryaapandi28/kasircore/internal/entity"
+	"github.com/suryaapandi28/kasircore/pkg/cache"
 	"gorm.io/gorm"
 )
 

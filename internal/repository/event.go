@@ -6,8 +6,8 @@ import (
 	"sort"
 	"time"
 
-	"github.com/Kevinmajesta/depublic-backend/internal/entity"
 	"github.com/google/uuid"
+	"github.com/suryaapandi28/kasircore/internal/entity"
 	"gorm.io/gorm"
 )
 
