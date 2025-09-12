@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/suryaapandi28/kasircore/configs"
 	"github.com/suryaapandi28/kasircore/internal/builder"
-	"github.com/suryaapandi28/kasircore/internal/entity"
 	"github.com/suryaapandi28/kasircore/pkg/cache"
 	"github.com/suryaapandi28/kasircore/pkg/encrypt"
 	"github.com/suryaapandi28/kasircore/pkg/postgres"
@@ -30,11 +29,11 @@ func main() {
 	tokenUseCase := token.NewTokenUseCase(cfg.JWT.SecretKey)
 
 	// Convert configs.Config to *entity.Config
-	entityCfg := convertToEntityConfig(cfg)
+	// entityCfg := convertToEntityConfig(cfg)
 
 	// Build public and private routes
-	publicRoutes := builder.BuildPublicRoutes(db, redisDB, tokenUseCase, encryptTool, entityCfg)
-	privateRoutes := builder.BuildPrivateRoutes(db, redisDB, encryptTool, entityCfg, tokenUseCase)
+	publicRoutes := builder.BuildPublicRoutes(db, redisDB, tokenUseCase, encryptTool)
+	privateRoutes := builder.BuildPrivateRoutes()
 
 	// Initialize and run the server
 	srv := server.NewServer("app", publicRoutes, privateRoutes, cfg.JWT.SecretKey)
@@ -44,17 +43,5 @@ func main() {
 func checkError(err error) {
 	if err != nil {
 		panic(err)
-	}
-}
-
-// Example function to convert configs.Config to *entity.Config
-func convertToEntityConfig(cfg *configs.Config) *entity.Config {
-	return &entity.Config{
-		SMTP: entity.SMTPConfig{
-			Host:     cfg.SMTP.Host,
-			Port:     cfg.SMTP.Port,
-			Password: cfg.SMTP.Password,
-		},
-		// Add other fields as needed
 	}
 }
