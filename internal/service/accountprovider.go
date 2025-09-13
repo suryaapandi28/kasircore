@@ -11,7 +11,7 @@ import (
 )
 
 type AccountproviderService interface {
-	CreateAdmin(admin *entity.ProviderAccount) (*entity.ProviderAccount, error)
+	CreateAdmin(accountprovider *entity.ProviderAccount) (*entity.ProviderAccount, error)
 	EmailExists(email string) bool
 }
 
@@ -30,21 +30,21 @@ func NewAccountproviderService(accountproviderRepository repository.Accountprovi
 	}
 }
 
-func (s *accountproviderService) CreateAdmin(admin *entity.ProviderAccount) (*entity.ProviderAccount, error) {
-	if admin.Email == "" {
+func (s *accountproviderService) CreateAdmin(accountprovider *entity.ProviderAccount) (*entity.ProviderAccount, error) {
+	if accountprovider.F_email_account == "" {
 		return nil, errors.New("email cannot be empty")
 	}
-	if admin.Password == "" {
+	if accountprovider.F_password == "" {
 		return nil, errors.New("password cannot be empty")
 	}
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(admin.Password), bcrypt.DefaultCost)
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(accountprovider.F_password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, err
 	}
-	admin.Password = string(hashedPassword)
+	accountprovider.F_password = string(hashedPassword)
 
-	newAdmin, err := s.accountproviderRepository.CreateAdmin(admin)
+	newAdmin, err := s.accountproviderRepository.CreateAccountProvider(accountprovider)
 	if err != nil {
 		return nil, err
 	}
@@ -52,8 +52,8 @@ func (s *accountproviderService) CreateAdmin(admin *entity.ProviderAccount) (*en
 	return newAdmin, nil
 }
 
-func (s *accountproviderService) EmailExists(email string) bool {
-	_, err := s.accountproviderRepository.FindAdminByEmail(email)
+func (s *accountproviderService) EmailExists(F_email_account string) bool {
+	_, err := s.accountproviderRepository.FindAdminByEmail(F_email_account)
 	if err != nil {
 		return false
 	}

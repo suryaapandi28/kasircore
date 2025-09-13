@@ -1,13 +1,14 @@
--- pertama bikin enum type untuk role
-CREATE TYPE provider_role AS ENUM ('superadmin', 'admin', 'staff');
-
 -- baru bikin tabel providers
 CREATE TABLE accounts_providers (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(150) NOT NULL,       
-    email VARCHAR(150) UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL,
-    role provider_role DEFAULT 'admin',
+    f_kd_account UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    f_nama_account VARCHAR(150) NOT NULL,       
+    f_email_account VARCHAR(150) UNIQUE NOT NULL,
+    f_password TEXT NOT NULL,
+    f_role_accout VARCHAR(150) NOT NULL,
+    f_phone_account VARCHAR(20) NOT NULL,
+    f_verification_account BOOLEAN NOT NULL DEFAULT FALSE,
+    f_jwt_token TEXT,
+    f_jwt_token_expired TIMESTAMPTZ,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     deleted_at TIMESTAMPTZ

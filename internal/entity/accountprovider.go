@@ -8,54 +8,54 @@ import (
 )
 
 type ProviderAccount struct {
-	ID       uuid.UUID `json:"id" gorm:"type:uuid;primaryKey"`
-	Name     string    `json:"name" gorm:"size:150;not null"`
-	Email    string    `json:"email" gorm:"unique;not null"`
-	Password string    `json:"-" gorm:"not null"`
-	Role     string    `json:"role" gorm:"type:enum('superadmin','admin','staff');default:'admin'"`
-	Phone    string    `json:"phone"`
+	F_kd_account    uuid.UUID `json:"f_kd_account" gorm:"type:uuid;primaryKey"`
+	F_nama_account  string    `json:"f_nama_account" gorm:"size:150;not null"`
+	F_email_account string    `json:"f_email_account" gorm:"unique;not null"`
+	F_password      string    `json:"f_password" gorm:"not null"`
+	F_role_accout   string    `json:"F_role_accout" gorm:"type:enum('superadmin','admin','staff');default:'admin'"`
+	F_phone_account string    `json:"f_phone_account"`
 	Auditable
-	Verification      bool      `json:"verification"`
-	JwtToken          string    `json:"jwt_token,omitempty"`
-	JwtTokenExpiresAt time.Time `json:"jwt_token_expires_at,omitempty"`
+	F_verification_account bool      `json:"f_verification_account"`
+	F_jwt_token            string    `json:"f_jwt_token,omitempty"`
+	F_jwt_token_expired    time.Time `json:"f_jwt_token_expired,omitempty"`
 }
 
 func (p *ProviderAccount) BeforeCreate(tx *gorm.DB) (err error) {
-	if p.ID == uuid.Nil {
-		p.ID = uuid.New()
+	if p.F_kd_account == uuid.Nil {
+		p.F_kd_account = uuid.New()
 	}
-	if p.Role == "" {
-		p.Role = "admin"
+	if p.F_role_accout == "" {
+		p.F_role_accout = "admin"
 	}
 	return
 }
 
-func NewProviderAccount(name, email, password, role, phone string, verification bool) *ProviderAccount {
+func NewProviderAccount(f_nama_account, f_email_account, f_password, F_role_accout, f_phone_account string, f_verification_account bool) *ProviderAccount {
 	return &ProviderAccount{
-		ID:           uuid.New(),
-		Name:         name,
-		Email:        email,
-		Password:     password,
-		Role:         role,
-		Phone:        phone,
-		Auditable:    NewAuditable(),
-		Verification: verification,
+		F_kd_account:           uuid.New(),
+		F_nama_account:         f_nama_account,
+		F_email_account:        f_email_account,
+		F_password:             f_password,
+		F_role_accout:          F_role_accout,
+		F_phone_account:        f_phone_account,
+		Auditable:              NewAuditable(),
+		F_verification_account: f_verification_account,
 	}
 }
 
-func UpdateProviderAccount(id uuid.UUID, name, email, password, role, phone string, verification bool) *ProviderAccount {
+func UpdateProviderAccount(f_kd_account uuid.UUID, f_nama_account, f_email_account, f_password, F_role_accout, f_phone_account string, F_verification_account bool) *ProviderAccount {
 	return &ProviderAccount{
-		ID:           id,
-		Name:         name,
-		Email:        email,
-		Password:     password,
-		Role:         role,
-		Phone:        phone,
-		Auditable:    UpdateAuditable(),
-		Verification: verification,
+		F_kd_account:           f_kd_account,
+		F_nama_account:         f_nama_account,
+		F_email_account:        f_email_account,
+		F_password:             f_password,
+		F_role_accout:          F_role_accout,
+		F_phone_account:        f_phone_account,
+		Auditable:              UpdateAuditable(),
+		F_verification_account: F_verification_account,
 	}
 }
 
 func (ProviderAccount) TableName() string {
-	return "accounts_provider"
+	return "accounts_providers"
 }
