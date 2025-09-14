@@ -27,6 +27,12 @@ func PublicRoutes(AccountproviderHandler handler.AccountproviderHandler) []*rout
 			Path:    "/create-account-provider",
 			Handler: AccountproviderHandler.CreateAdmin,
 		},
+
+		{
+			Method:  http.MethodPost,
+			Path:    "/login-provider",
+			Handler: AccountproviderHandler.LoginProvider,
+		},
 	}
 }
 

@@ -2,8 +2,8 @@ package binder
 
 // Request untuk login provider
 type ProviderLoginRequest struct {
-	Email    string `json:"email" validate:"required,email"`
-	Password string `json:"password" validate:"required"`
+	F_email_account string `json:"f_email_account" validate:"required,email"`
+	F_password      string `json:"f_password" validate:"required"`
 }
 
 // Request untuk membuat akun provider baru

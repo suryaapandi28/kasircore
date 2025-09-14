@@ -12,6 +12,7 @@ import (
 
 type AccountproviderService interface {
 	CreateAdmin(accountprovider *entity.ProviderAccount) (*entity.ProviderAccount, error)
+	LoginProvider(F_email_account string, F_password string) (*entity.ProviderAccount, error)
 	EmailExists(email string) bool
 }
 
@@ -58,4 +59,22 @@ func (s *accountproviderService) EmailExists(F_email_account string) bool {
 		return false
 	}
 	return true
+}
+
+func (s *accountproviderService) LoginProvider(F_email_account string, F_password string) (*entity.ProviderAccount, error) {
+	DatAccount, err := s.accountproviderRepository.FindAdminByEmail(F_email_account)
+	if err != nil {
+		return nil, errors.New("Email tidak terdaftar")
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(DatAccount.F_password), []byte(F_password))
+	if err != nil {
+		return nil, errors.New("Password salah")
+	}
+
+	if !DatAccount.F_verification_account {
+		return nil, errors.New("Akun provider belum diverifikasi")
+	}
+
+	return DatAccount, nil
 }

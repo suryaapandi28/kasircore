@@ -22,7 +22,7 @@ func (h *AccountproviderHandler) CreateAdmin(c echo.Context) error {
 	input := binder.ProviderCreateRequest{}
 
 	if err := c.Bind(&input); err != nil {
-		return c.JSON(http.StatusBadRequest, response.ErrorResponse(0, "there is an input error"))
+		return c.JSON(http.StatusBadRequest, response.ErrorResponse(30, "there is an input error"))
 	}
 
 	if h.accountproviderService.EmailExists(input.F_email_account) {
@@ -30,7 +30,7 @@ func (h *AccountproviderHandler) CreateAdmin(c echo.Context) error {
 	}
 	if input.F_email_account == "" || input.F_password == "" {
 		return c.JSON(http.StatusBadRequest,
-			response.ErrorResponse(30, "Field wajib tidak boleh kosong"))
+			response.ErrorResponse(26, "Field wajib tidak boleh kosong"))
 	}
 
 	newAccountProvider := entity.NewProviderAccount(input.F_nama_account, input.F_email_account, input.F_password, input.F_role_accout, input.F_phone_account, input.F_verification_account)
@@ -47,4 +47,19 @@ func (h *AccountproviderHandler) CreateAdmin(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, response.SuccessResponse(200, "Successfully created a new account provider", respData))
+}
+
+func (h *AccountproviderHandler) LoginProvider(c echo.Context) error {
+	input := binder.ProviderLoginRequest{}
+
+	if err := c.Bind(&input); err != nil {
+		return c.JSON(http.StatusBadRequest, response.ErrorResponse(30, "there is an input error"))
+	}
+
+	admin, err := h.accountproviderService.LoginProvider(input.F_email_account, input.F_password)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.ErrorResponse(30, err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, response.SuccessResponse(http.StatusOK, "login success", admin))
 }
