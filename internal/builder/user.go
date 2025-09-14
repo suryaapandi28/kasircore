@@ -1,11 +1,13 @@
 package builder
 
 import (
+	"github.com/suryaapandi28/kasircore/internal/entity"
 	"github.com/suryaapandi28/kasircore/internal/http/handler"
 	"github.com/suryaapandi28/kasircore/internal/http/router"
 	"github.com/suryaapandi28/kasircore/internal/repository"
 	"github.com/suryaapandi28/kasircore/internal/service"
 	"github.com/suryaapandi28/kasircore/pkg/cache"
+	"github.com/suryaapandi28/kasircore/pkg/email"
 	"github.com/suryaapandi28/kasircore/pkg/encrypt"
 	"github.com/suryaapandi28/kasircore/pkg/route"
 	"github.com/suryaapandi28/kasircore/pkg/token"
@@ -16,14 +18,20 @@ import (
 	"gorm.io/gorm"
 )
 
-func BuildPublicRoutes(db *gorm.DB, redisDB *redis.Client, tokenUseCase token.TokenUseCase, encryptTool encrypt.EncryptTool) []*route.Route {
+func BuildPublicRoutes(db *gorm.DB, redisDB *redis.Client, tokenUseCase token.TokenUseCase, encryptTool encrypt.EncryptTool,
+	entityCfg *entity.Config) []*route.Route {
 	cacheable := cache.NewCacheable(redisDB)
+	emailService := email.NewEmailSender(entityCfg)
 
 	accountproviderRepository := repository.NewAccountproviderRepository(db, cacheable)
-	accountproviderService := service.NewAccountproviderService(accountproviderRepository, tokenUseCase, encryptTool)
+	accountproviderService := service.NewAccountproviderService(accountproviderRepository, tokenUseCase, encryptTool, emailService)
 	AccountproviderHandler := handler.NewAccountproviderHandler(accountproviderService)
 
-	return router.PublicRoutes(AccountproviderHandler)
+	otpRepository := repository.NewOTPRepository(db, cacheable)
+	otpService := service.NewOtpService(otpRepository, emailService)
+	otpHandler := handler.NewOtpHandler(otpService)
+
+	return router.PublicRoutes(AccountproviderHandler, otpHandler)
 }
 
 func BuildPrivateRoutes() []*route.Route {

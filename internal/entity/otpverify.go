@@ -15,3 +15,7 @@ type OtpVerify struct {
 
 	Auditable
 }
+
+func (OtpVerify) TableName() string {
+	return "otp_verify"
+}

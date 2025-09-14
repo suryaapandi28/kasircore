@@ -20,7 +20,7 @@ var (
 	onlyStaff      = []string{Staff}
 )
 
-func PublicRoutes(AccountproviderHandler handler.AccountproviderHandler) []*route.Route {
+func PublicRoutes(AccountproviderHandler handler.AccountproviderHandler, otpHandler handler.OtpHandler) []*route.Route {
 	return []*route.Route{
 		{
 			Method:  http.MethodPost,
@@ -32,6 +32,12 @@ func PublicRoutes(AccountproviderHandler handler.AccountproviderHandler) []*rout
 			Method:  http.MethodPost,
 			Path:    "/login-provider",
 			Handler: AccountproviderHandler.LoginProvider,
+		},
+
+		{
+			Method:  http.MethodPost,
+			Path:    "/create-otp-verify",
+			Handler: otpHandler.GenerateOtp,
 		},
 	}
 }

@@ -2,9 +2,11 @@ package service
 
 import (
 	"errors" // Import log package
+	"time"
 
 	"github.com/suryaapandi28/kasircore/internal/entity"
 	"github.com/suryaapandi28/kasircore/internal/repository"
+	"github.com/suryaapandi28/kasircore/pkg/email"
 	"github.com/suryaapandi28/kasircore/pkg/encrypt"
 	"github.com/suryaapandi28/kasircore/pkg/token"
 	"golang.org/x/crypto/bcrypt"
@@ -20,14 +22,16 @@ type accountproviderService struct {
 	accountproviderRepository repository.AccountproviderRepository
 	tokenUseCase              token.TokenUseCase
 	encryptTool               encrypt.EncryptTool
+	emailSender               *email.EmailSender
 }
 
 func NewAccountproviderService(accountproviderRepository repository.AccountproviderRepository, tokenUseCase token.TokenUseCase,
-	encryptTool encrypt.EncryptTool) *accountproviderService {
+	encryptTool encrypt.EncryptTool, emailSender *email.EmailSender) *accountproviderService {
 	return &accountproviderService{
 		accountproviderRepository: accountproviderRepository,
 		tokenUseCase:              tokenUseCase,
 		encryptTool:               encryptTool,
+		emailSender:               emailSender,
 	}
 }
 
@@ -46,6 +50,13 @@ func (s *accountproviderService) CreateAdmin(accountprovider *entity.ProviderAcc
 	accountprovider.F_password = string(hashedPassword)
 
 	newAdmin, err := s.accountproviderRepository.CreateAccountProvider(accountprovider)
+	if err != nil {
+		return nil, err
+	}
+
+	createaccounttime := time.Now()
+
+	err = s.emailSender.SendWelcomeEmail(accountprovider.F_email_account, accountprovider.F_nama_account, createaccounttime)
 	if err != nil {
 		return nil, err
 	}

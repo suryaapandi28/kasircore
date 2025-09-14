@@ -18,9 +18,9 @@ type Config struct {
 }
 
 type SMTPConfig struct {
-	Host     string `env:"HOST" envDefault:"your-domain"`
-	Port     string `env:"PORT" envDefault:"587"`
-	Password string `env:"PASSWORD" envDefault:"your_password"`
+	Host     string `env:"HOST" envDefault:"smtp.hostinger.com"`
+	Port     string `env:"PORT" envDefault:"465"`
+	Password string `env:"PASSWORD" envDefault:"AGA_hrms1"`
 }
 
 type PostgresConfig struct {
