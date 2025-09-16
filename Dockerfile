@@ -13,6 +13,7 @@ RUN go mod download
 # Mengcopy kode sumber ke dalam kontainer
 COPY . .
 
+
 # Membuat binary aplikasi
 RUN CGO_ENABLED=0 GOOS=linux go build -o /app/myapp cmd/app/main.go
 
