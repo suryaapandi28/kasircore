@@ -14,6 +14,7 @@ type OTPRepository interface {
 	Create(ctx context.Context, otp *entity.OtpVerify) error
 	FindByEmail(email string) (*entity.ProviderAccount, error)
 	FindbyKdAccount(F_kd_account uuid.UUID) (*entity.OtpVerify, error)
+	FindPhoneByKdAccount(F_kd_account uuid.UUID) (string, error)
 
 	SaveOtp(otp *entity.OtpVerify) error
 	UpdateOtp(otp *entity.OtpVerify) error
@@ -53,4 +54,20 @@ func (r *otpRepository) FindbyKdAccount(F_kd_account uuid.UUID) (*entity.OtpVeri
 		return otpverify, err
 	}
 	return otpverify, nil
+}
+
+func (r *otpRepository) FindPhoneByKdAccount(F_kd_account uuid.UUID) (string, error) {
+	var phone string
+
+	err := r.db.
+		Table("accounts").
+		Select("f_phone_account").
+		Where("f_kd_account = ?", F_kd_account).
+		Take(&phone).Error
+
+	if err != nil {
+		return "", err
+	}
+
+	return phone, nil
 }
