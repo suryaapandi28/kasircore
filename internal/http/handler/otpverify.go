@@ -37,3 +37,22 @@ func (h *OtpHandler) GenerateOtp(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, response.SuccessResponse(200, "Successfully created a new otp verify", respData))
 }
+
+func (h *OtpHandler) VerifyOtpRequest(c echo.Context) error {
+	var input binder.VerifyOtpRequest
+	if err := c.Bind(&input); err != nil {
+		return c.JSON(http.StatusBadRequest, response.ErrorResponse(30, "there is an input error"))
+	}
+
+	otpCode, err := h.otpService.VerifyOtpRequest(input.F_email_account, input.F_kode_otp)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.ErrorResponse(30, err.Error()))
+	}
+
+	respData := map[string]interface{}{
+		"kode_account": otpCode.F_kd_account,
+	}
+
+	return c.JSON(http.StatusOK, response.SuccessResponse(200, "Successfully verified OTP", respData))
+
+}

@@ -15,6 +15,12 @@ type Config struct {
 	JWT      JwtConfig      `envPrefix:"JWT_"`
 	Encrypt  EncryptConfig  `envPrefix:"ENCRYPT_"`
 	SMTP     SMTPConfig     `envPrefix:"SMTP_"`
+	WaSender WhatsappConfig `envPrefix:"WHATSAPP_"`
+}
+
+type WhatsappConfig struct {
+	ApiToken string `env:"API_TOKEN"`
+	ApiURL   string `env:"API_URL"`
 }
 
 type SMTPConfig struct {

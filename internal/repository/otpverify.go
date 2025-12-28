@@ -13,8 +13,10 @@ import (
 type OTPRepository interface {
 	Create(ctx context.Context, otp *entity.OtpVerify) error
 	FindByEmail(email string) (*entity.ProviderAccount, error)
-	FindbyKdAccount(F_kd_account uuid.UUID) (*entity.OtpVerify, error)
+	FindOTPbyKdAccount(F_kd_account uuid.UUID) (*entity.OtpVerify, error)
 	FindPhoneByKdAccount(F_kd_account uuid.UUID) (string, error)
+	UpdateAccountVerified(F_kd_account uuid.UUID, status bool) error
+	DeleteOTPByKdAccount(F_kd_account uuid.UUID) error
 
 	SaveOtp(otp *entity.OtpVerify) error
 	UpdateOtp(otp *entity.OtpVerify) error
@@ -48,7 +50,7 @@ func (r *otpRepository) UpdateOtp(otp *entity.OtpVerify) error {
 	return r.db.Save(otp).Error
 }
 
-func (r *otpRepository) FindbyKdAccount(F_kd_account uuid.UUID) (*entity.OtpVerify, error) {
+func (r *otpRepository) FindOTPbyKdAccount(F_kd_account uuid.UUID) (*entity.OtpVerify, error) {
 	otpverify := new(entity.OtpVerify)
 	if err := r.db.Where("f_kd_account = ?", F_kd_account).Take(otpverify).Error; err != nil {
 		return otpverify, err
@@ -60,7 +62,7 @@ func (r *otpRepository) FindPhoneByKdAccount(F_kd_account uuid.UUID) (string, er
 	var phone string
 
 	err := r.db.
-		Table("accounts").
+		Table("accounts_providers").
 		Select("f_phone_account").
 		Where("f_kd_account = ?", F_kd_account).
 		Take(&phone).Error
@@ -70,4 +72,19 @@ func (r *otpRepository) FindPhoneByKdAccount(F_kd_account uuid.UUID) (string, er
 	}
 
 	return phone, nil
+}
+func (r *otpRepository) UpdateAccountVerified(F_kd_account uuid.UUID, status bool) error {
+	return r.db.Model(&entity.ProviderAccount{}).
+		Where("f_kd_account = ?", F_kd_account).
+		Update("f_verification_account", status).
+		Error
+}
+
+func (r *otpRepository) DeleteOTPByKdAccount(
+	F_kd_account uuid.UUID,
+) error {
+	return r.db.
+		Where("f_kd_account = ?", F_kd_account).
+		Delete(&entity.OtpVerify{}).
+		Error
 }

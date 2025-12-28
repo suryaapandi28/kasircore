@@ -39,6 +39,12 @@ func PublicRoutes(AccountproviderHandler handler.AccountproviderHandler, otpHand
 			Path:    "/create-otp-verify",
 			Handler: otpHandler.GenerateOtp,
 		},
+
+		{
+			Method:  http.MethodPost,
+			Path:    "/otp-verify",
+			Handler: otpHandler.VerifyOtpRequest,
+		},
 	}
 }
 

@@ -171,6 +171,50 @@ func (e *EmailSender) SendVerificationEmail(to, name, code string) error {
 	return e.SendEmail([]string{to}, subject, body)
 }
 
+func (e *EmailSender) SendSuccessVerificationEmail(to, name string) error {
+	subject := "Verification Success | APSM Indonesia Global"
+
+	body := fmt.Sprintf(`
+    <html>
+    <body style="font-family: Arial, sans-serif; background-color:#f9f9f9; padding:20px;">
+        <table width="100%%" cellspacing="0" cellpadding="0">
+            <tr>
+                <td align="center">
+                    <table width="600" style="background:#ffffff; padding:30px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                        <tr>
+                            <td align="center" style="font-size:20px; font-weight:bold; color:#333;">
+                                Email Verification Success
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding:20px 0; font-size:16px; color:#555;">
+                                Dear <strong>%s</strong>,<br><br>
+                                Congratulations! Your email has been successfully verified.<br>
+							</td>
+						</tr>
+						<tr>
+							<td align="center" style="padding:20px 0; font-size:18px; font-weight:bold; color:#2b6cb0;">
+								Your email has been successfully verified ✅
+                            </td>
+                        </tr>
+                       
+                        <tr>
+                            <td style="padding-top:30px; font-size:14px; color:#555;">
+                                Regards,<br>
+                                <b>APSM Indonesia Global</b>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
+    `, name)
+
+	return e.SendEmail([]string{to}, subject, body)
+}
+
 func (e *EmailSender) SendTransactionInfo(to, Transactions_id, Cart_id, User_id,
 	Fullname_user, Trx_date, Payment, Payment_url, Amount string) error {
 	subject := "Transaction Info | Depublic"
