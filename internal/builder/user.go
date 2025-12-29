@@ -34,7 +34,12 @@ func BuildPublicRoutes(db *gorm.DB, redisDB *redis.Client, tokenUseCase token.To
 	otpService := service.NewOtpService(otpRepository, emailService, WaSender)
 	otpHandler := handler.NewOtpHandler(otpService)
 
-	return router.PublicRoutes(AccountproviderHandler, otpHandler)
+	merchantRepository := repository.NewMerchantRepository(db, cacheable)
+	merchantService := service.NewMerchantService(merchantRepository)
+
+	MerchantHandler := handler.NewMerchantHandler(merchantService)
+
+	return router.PublicRoutes(AccountproviderHandler, otpHandler, MerchantHandler)
 }
 
 func BuildPrivateRoutes() []*route.Route {
