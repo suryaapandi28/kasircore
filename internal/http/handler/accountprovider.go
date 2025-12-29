@@ -56,10 +56,15 @@ func (h *AccountproviderHandler) LoginProvider(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, response.ErrorResponse(30, "there is an input error"))
 	}
 
-	admin, err := h.accountproviderService.LoginProvider(input.F_email_account, input.F_password)
+	loginData, err := h.accountproviderService.LoginProvider(input.F_email_account, input.F_password)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, response.ErrorResponse(30, err.Error()))
 	}
 
-	return c.JSON(http.StatusOK, response.SuccessResponse(http.StatusOK, "login success", admin))
+	return c.JSON(http.StatusOK, response.SuccessResponse(http.StatusOK, "login success", map[string]interface{}{
+		"email":      loginData.F_email_account,
+		"token":      loginData.F_jwt_token,
+		"expired_at": loginData.F_jwt_token_expired,
+	}))
+
 }

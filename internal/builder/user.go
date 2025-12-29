@@ -26,7 +26,7 @@ func BuildPublicRoutes(db *gorm.DB, redisDB *redis.Client, tokenUseCase token.To
 	WaSender := whatsapp.NewWhatsappSender(entityCfg)
 
 	accountproviderRepository := repository.NewAccountproviderRepository(db, cacheable)
-	accountproviderService := service.NewAccountproviderService(accountproviderRepository, tokenUseCase, encryptTool, emailService)
+	accountproviderService := service.NewAccountproviderService(accountproviderRepository, tokenUseCase, encryptTool, emailService, WaSender)
 
 	AccountproviderHandler := handler.NewAccountproviderHandler(accountproviderService)
 
