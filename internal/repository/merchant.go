@@ -7,11 +7,7 @@ import (
 )
 
 type MerchantRepository interface {
-	Create(merchant *entity.Merchant) error
-	FindAll() ([]entity.Merchant, error)
-	FindByID(id string) (*entity.Merchant, error)
-	Update(merchant *entity.Merchant) error
-	Delete(id string) error
+	CreateMerchant(merchant *entity.Merchant) (*entity.Merchant, error)
 }
 
 type merchantRepository struct {
@@ -19,30 +15,13 @@ type merchantRepository struct {
 	cacheable cache.Cacheable
 }
 
-func NewMerchantRepository(db *gorm.DB, cacheable cache.Cacheable) MerchantRepository {
-	return &merchantRepository{db, cacheable}
+func NewMerchantRepository(db *gorm.DB, cacheable cache.Cacheable) *merchantRepository {
+	return &merchantRepository{db: db, cacheable: cacheable}
 }
 
-func (r *merchantRepository) Create(merchant *entity.Merchant) error {
-	return r.db.Create(merchant).Error
-}
-
-func (r *merchantRepository) FindAll() ([]entity.Merchant, error) {
-	var merchants []entity.Merchant
-	err := r.db.Find(&merchants).Error
-	return merchants, err
-}
-
-func (r *merchantRepository) FindByID(id string) (*entity.Merchant, error) {
-	var merchant entity.Merchant
-	err := r.db.First(&merchant, "f_kode_merchant = ?", id).Error
-	return &merchant, err
-}
-
-func (r *merchantRepository) Update(merchant *entity.Merchant) error {
-	return r.db.Save(merchant).Error
-}
-
-func (r *merchantRepository) Delete(id string) error {
-	return r.db.Delete(&entity.Merchant{}, "f_kode_merchant = ?", id).Error
+func (r *merchantRepository) CreateMerchant(merchant *entity.Merchant) (*entity.Merchant, error) {
+	if err := r.db.Create(&merchant).Error; err != nil {
+		return merchant, err
+	}
+	return merchant, nil
 }

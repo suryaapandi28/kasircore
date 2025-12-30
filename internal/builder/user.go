@@ -34,8 +34,8 @@ func BuildPublicRoutes(db *gorm.DB, redisDB *redis.Client, tokenUseCase token.To
 	otpService := service.NewOtpService(otpRepository, emailService, WaSender)
 	otpHandler := handler.NewOtpHandler(otpService)
 
-	merchantRepository := repository.NewMerchantRepository(db, cacheable)
-	merchantService := service.NewMerchantService(merchantRepository)
+	MerchantRepository := repository.NewMerchantRepository(db, cacheable)
+	merchantService := service.NewMerchantService(MerchantRepository)
 
 	MerchantHandler := handler.NewMerchantHandler(merchantService)
 

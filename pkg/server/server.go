@@ -12,6 +12,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
+	"github.com/suryaapandi28/kasircore/internal/validator"
 	"github.com/suryaapandi28/kasircore/pkg/response"
 	"github.com/suryaapandi28/kasircore/pkg/route"
 	"github.com/suryaapandi28/kasircore/pkg/token"
@@ -23,6 +24,8 @@ type Server struct {
 
 func NewServer(serverName string, publicRoutes, privateRoutes []*route.Route, secretKey string) *Server {
 	e := echo.New()
+	// Set up validator
+	e.Validator = validator.NewValidator() // Tambahkan baris ini
 
 	e.GET("/", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, response.SuccessResponse(http.StatusOK, "Hello, World!", nil))
