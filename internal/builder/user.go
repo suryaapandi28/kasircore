@@ -25,10 +25,15 @@ func BuildPublicRoutes(db *gorm.DB, redisDB *redis.Client, tokenUseCase token.To
 	emailService := email.NewEmailSender(entityCfg)
 	WaSender := whatsapp.NewWhatsappSender(entityCfg)
 
+	// account provider
 	accountproviderRepository := repository.NewAccountproviderRepository(db, cacheable)
 	accountproviderService := service.NewAccountproviderService(accountproviderRepository, tokenUseCase, encryptTool, emailService, WaSender)
-
 	AccountproviderHandler := handler.NewAccountproviderHandler(accountproviderService)
+
+	// account user
+	accountuserRepository := repository.NewAccountUserRepository(db, cacheable)
+	accountuserService := service.NewAccountUserService(accountuserRepository, tokenUseCase, encryptTool, emailService, WaSender)
+	AccountUserHandler := handler.NewAccountUserHandler(accountuserService)
 
 	otpRepository := repository.NewOTPRepository(db, cacheable)
 	otpService := service.NewOtpService(otpRepository, emailService, WaSender)
@@ -36,10 +41,9 @@ func BuildPublicRoutes(db *gorm.DB, redisDB *redis.Client, tokenUseCase token.To
 
 	MerchantRepository := repository.NewMerchantRepository(db, cacheable)
 	merchantService := service.NewMerchantService(MerchantRepository)
-
 	MerchantHandler := handler.NewMerchantHandler(merchantService)
 
-	return router.PublicRoutes(AccountproviderHandler, otpHandler, MerchantHandler)
+	return router.PublicRoutes(AccountproviderHandler, otpHandler, MerchantHandler, AccountUserHandler)
 }
 
 func BuildPrivateRoutes() []*route.Route {

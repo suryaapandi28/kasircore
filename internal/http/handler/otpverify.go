@@ -30,9 +30,9 @@ func (h *OtpHandler) GenerateOtp(c echo.Context) error {
 
 	// return c.JSON(http.StatusOK, otp)
 	respData := map[string]interface{}{
-		"kode_account": hasilotp.F_kd_account,
-		"kode_otp":     hasilotp.F_kode_otp,
-		"expired_at":   hasilotp.F_otp_expired,
+		"account":    hasilotp.F_kd_account,
+		"kode_otp":   hasilotp.F_kode_otp,
+		"expired_at": hasilotp.F_otp_expired,
 	}
 
 	return c.JSON(http.StatusOK, response.SuccessResponse(200, "Successfully created a new otp verify", respData))
@@ -50,7 +50,7 @@ func (h *OtpHandler) VerifyOtpRequest(c echo.Context) error {
 	}
 
 	respData := map[string]interface{}{
-		"kode_account": otpCode.F_kd_account,
+		"account": otpCode.F_kd_account,
 	}
 
 	return c.JSON(http.StatusOK, response.SuccessResponse(200, "Successfully verified OTP", respData))

@@ -73,7 +73,7 @@ func NewRateLimiter(rdb *redis.Client, limit int, window time.Duration) echo.Mid
 			if exists > 0 {
 				return c.JSON(http.StatusTooManyRequests,
 					response.ErrorResponse(http.StatusTooManyRequests,
-						"Anda diblokir sementara/permanen karena terlalu banyak request"))
+						"Anda diblokir sementara karena terlalu banyak request"))
 			}
 
 			// hitung request
